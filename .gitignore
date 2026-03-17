@@ -1,0 +1,17 @@
+# Laravel / PHP
+booking-api/vendor/
+booking-api/node_modules/
+booking-api/.env
+booking-api/storage/*.key
+booking-api/bootstrap/cache/*
+booking-api/public/hot
+booking-api/public/storage
+
+# Общие
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+.idea/
+.vscode/
