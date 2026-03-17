@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'role',   // ← добавляем поле роли (если миграция уже есть)
+        'role',   //
     ];
 
     protected $hidden = [

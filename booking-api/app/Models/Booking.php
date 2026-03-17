@@ -24,7 +24,6 @@ class Booking extends Model
         'status'    => 'string',
     ];
 
-    // Связи (добавим позже, но можно сразу)
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -33,5 +32,21 @@ class Booking extends Model
     public function resource()
     {
         return $this->belongsTo(Resource::class);
+    }
+
+    /**
+     * Проверяет, пересекается ли это бронирование с другими для того же ресурса
+     */
+    public function hasConflict(): bool
+    {
+        return Booking::where('resource_id', $this->resource_id)
+            ->where('id', '!=', $this->id ?? 0) // исключаем себя при обновлении
+            ->where(function ($query) {
+                $query->where(function ($q) {
+                    $q->where('starts_at', '<', $this->ends_at)
+                      ->where('ends_at', '>', $this->starts_at);
+                });
+            })
+            ->exists();
     }
 }
