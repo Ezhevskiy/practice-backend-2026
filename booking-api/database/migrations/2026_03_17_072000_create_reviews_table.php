@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {
@@ -17,7 +14,7 @@ return new class extends Migration
             $table->foreignId('booking_id')
                   ->constrained()
                   ->onDelete('cascade')
-                  ->unique();   // один отзыв на одно бронирование
+                  ->unique();  // один отзыв на одно бронирование
 
             $table->foreignId('user_id')
                   ->constrained()
@@ -30,16 +27,15 @@ return new class extends Migration
             $table->text('comment')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();  // для возможности "мягкого" удаления отзыва админом
 
-            $table->index('booking_id');
-            $table->index('user_id');
-            $table->index('rating');      // для сортировки по рейтингу / подсчёта среднего
+            // Индексы для быстрого подсчёта среднего и сортировки
+            $table->index(['booking_id']);
+            $table->index(['user_id']);
+            $table->index('rating');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('reviews');

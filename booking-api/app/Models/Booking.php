@@ -34,17 +34,19 @@ class Booking extends Model
         return $this->belongsTo(Resource::class);
     }
 
-    /**
-     * Проверяет, пересекается ли это бронирование с другими для того же ресурса
-     */
+    public function review()
+    {
+        return $this->hasOne(Review::class);
+    }
+
     public function hasConflict(): bool
     {
         return Booking::where('resource_id', $this->resource_id)
-            ->where('id', '!=', $this->id ?? 0) // исключаем себя при обновлении
-            ->where(function ($query) {
-                $query->where(function ($q) {
-                    $q->where('starts_at', '<', $this->ends_at)
-                      ->where('ends_at', '>', $this->starts_at);
+            ->where('id', '!=', $this->id ?? 0)
+            ->where(function ($q) {
+                $q->where(function ($sub) {
+                    $sub->where('starts_at', '<', $this->ends_at)
+                        ->where('ends_at', '>', $this->starts_at);
                 });
             })
             ->exists();

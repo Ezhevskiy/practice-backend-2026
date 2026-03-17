@@ -24,12 +24,37 @@ class Resource extends Model
     ];
 
     protected $casts = [
-        'has_projector' => 'boolean',
-        'has_whiteboard' => 'boolean',
-        'has_video_conference' => 'boolean',
-        'has_monitor' => 'boolean',
-        'has_speakers' => 'boolean',
-        'is_active' => 'boolean',
-        'price_per_hour' => 'decimal:2',
+        'has_projector'         => 'boolean',
+        'has_whiteboard'        => 'boolean',
+        'has_video_conference'  => 'boolean',
+        'has_monitor'           => 'boolean',
+        'has_speakers'          => 'boolean',
+        'is_active'             => 'boolean',
+        'price_per_hour'        => 'decimal:2',
     ];
+
+    protected $appends = [
+        'average_rating',
+        'review_count',
+    ];
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasManyThrough(Review::class, Booking::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    public function getReviewCountAttribute()
+    {
+        return $this->reviews()->count();
+    }
 }
