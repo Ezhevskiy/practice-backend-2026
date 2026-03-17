@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @OA\Info(
+ * title="Booking API",
+ * version="1.0.0",
+ * description="Документация для сервиса бронирования"
+ * )
+ */
+
 namespace App\Http\Controllers;
 
 use App\Models\User;

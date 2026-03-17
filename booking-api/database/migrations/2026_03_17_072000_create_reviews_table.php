@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('comment')->nullable();
 
             $table->timestamps();
-            $table->softDeletes();  // для возможности "мягкого" удаления отзыва админом
+          //  $table->softDeletes();  
 
             // Индексы для быстрого подсчёта среднего и сортировки
             $table->index(['booking_id']);
